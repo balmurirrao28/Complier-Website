@@ -1,5 +1,5 @@
 console.log("🔥 NEW SERVER VERSION RUNNING 🔥");
-console.log("🔥 NEW VERSION RUNNING 🔥");
+
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -12,17 +12,14 @@ const app = express();
 /* =========================
    ✅ Middleware
 ========================= */
-
-// Allow all origins (good for now, can restrict later)
 app.use(cors());
-
-// Parse JSON
 app.use(express.json());
 
 /* =========================
    ✅ Routes
 ========================= */
 
+// API routes FIRST
 app.use("/api/auth", authRoute);
 app.use("/api/compiler", compilerRoute);
 
@@ -37,13 +34,17 @@ app.get("/", (req, res) => {
 });
 
 /* =========================
+   ❌ 404 (MUST BE LAST)
+========================= */
+app.use((req, res) => {
+  res.status(404).send("Route not found: " + req.originalUrl);
+});
+
+/* =========================
    ✅ Server Start
 ========================= */
-
 const PORT = process.env.PORT || 5000;
-app.use("*", (req, res) => {
-  res.status(404).send("Route not found: " + req.url);
-});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
