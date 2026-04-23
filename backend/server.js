@@ -1,3 +1,4 @@
+console.log("🔥 NEW VERSION RUNNING 🔥");
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -31,7 +32,7 @@ app.get("/api/hello", (req, res) => {
 
 // Root route
 app.get("/", (req, res) => {
-  res.send("Backend is running 🚀");
+  res.send("Backend UPDATED VERSION 🚀");
 });
 
 /* =========================
