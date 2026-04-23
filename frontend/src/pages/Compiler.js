@@ -48,7 +48,6 @@ export default function Compiler() {
 
       console.log("API RESPONSE:", res.data);
 
-      // ✅ Safe output handling
       if (res.data && res.data.output) {
         setOutput(res.data.output);
       } else {
@@ -57,6 +56,26 @@ export default function Compiler() {
     } catch (err) {
       console.error(err);
       setOutput("Error running code ❌");
+    }
+  };
+
+  /* =========================
+     Save Code (FIXED POSITION)
+  ========================= */
+  const saveCode = async () => {
+    try {
+      await axios.post(
+        "https://complier-backend-lk9v.onrender.com/api/save",
+        {
+          code,
+          language,
+          user: "test-user",
+        }
+      );
+
+      alert("Code saved ✅");
+    } catch (err) {
+      alert("Error saving code ❌");
     }
   };
 
@@ -89,13 +108,20 @@ export default function Compiler() {
           onChange={(e) => setCode(e.target.value)}
         />
 
+        {/* ✅ Run button */}
         <button style={styles.runBtn} onClick={runCode}>
           ▶ Run Code
         </button>
 
+        {/* ✅ Save button */}
+        <button style={styles.runBtn} onClick={saveCode}>
+          💾 Save Code
+        </button>
+
+        {/* Output */}
         <div style={styles.output}>
           <h3>Output:</h3>
-          <pre>{output ? output : "No output"}</pre>
+          <pre>{output || "No output"}</pre>
         </div>
       </div>
     </div>

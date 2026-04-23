@@ -1,3 +1,6 @@
+const ProtectedRoute = ({ user, children }) => {
+  return user ? children : <Login />;
+};
 import {
   BrowserRouter as Router,
   Routes,
@@ -93,7 +96,14 @@ function AppLayout() {
 
             {/* Protected */}
             <Route path="/home" element={user ? <Home /> : <Login />} />
-            <Route path="/compiler" element={user ? <Compiler /> : <Login />} />
+            <Route
+  path="/compiler"
+  element={
+    <ProtectedRoute user={user}>
+      <Compiler />
+    </ProtectedRoute>
+  }
+/>
             <Route path="/python" element={user ? <Python /> : <Login />} />
             <Route path="/c" element={user ? <C /> : <Login />} />
             <Route path="/java" element={user ? <Java /> : <Login />} />

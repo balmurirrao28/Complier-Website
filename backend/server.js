@@ -22,6 +22,13 @@ app.use(express.json());
 // API routes FIRST
 app.use("/api/auth", authRoute);
 app.use("/api/compiler", compilerRoute);
+app.post("/api/save", (req, res) => {
+  const { code, language, user } = req.body;
+
+  console.log("Saving:", code, language, user);
+
+  res.json({ message: "Code saved ✅" });
+});
 
 // Test route
 app.get("/api/hello", (req, res) => {
