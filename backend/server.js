@@ -41,7 +41,9 @@ app.get("/", (req, res) => {
 ========================= */
 
 const PORT = process.env.PORT || 5000;
-
+app.use("*", (req, res) => {
+  res.status(404).send("Route not found: " + req.url);
+});
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
