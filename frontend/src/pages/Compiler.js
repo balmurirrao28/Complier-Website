@@ -5,9 +5,10 @@ import axios from "axios";
 const templates = {
   python: 'print("Hello World")',
   c: '#include <stdio.h>\nint main(){ printf("Hello"); return 0; }',
-  java: 'public class Main {\n public static void main(String[] args){\n  System.out.println("Hello");\n }\n}',
+  java:
+    'public class Main {\n public static void main(String[] args){\n  System.out.println("Hello");\n }\n}',
   r: 'print("Hello from R")',
-  mysql: 'SELECT 1 AS result;',
+  mysql: "SELECT 1 AS result;",
 };
 
 export default function Compiler() {
@@ -17,6 +18,9 @@ export default function Compiler() {
   const [output, setOutput] = useState("");
   const [language, setLanguage] = useState("python");
 
+  /* =========================
+     Load language from URL
+  ========================= */
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const lang = params.get("lang");
@@ -27,21 +31,31 @@ export default function Compiler() {
     }
   }, [location]);
 
+  /* =========================
+     Run Code
+  ========================= */
   const runCode = async () => {
     setOutput("Running...");
 
     try {
-      const res = await axios.post("https://complier-backend-lk9v.onrender.com/api/compiler", {
-        code,
-        language,
-      });
-
-      setOutput(
-        typeof res.data.output === "object"
-          ? JSON.stringify(res.data.output, null, 2)
-          : res.data.output
+      const res = await axios.post(
+        "https://complier-backend-lk9v.onrender.com/api/compiler",
+        {
+          code,
+          language,
+        }
       );
+
+      console.log("API RESPONSE:", res.data);
+
+      // ✅ Safe output handling
+      if (res.data && res.data.output) {
+        setOutput(res.data.output);
+      } else {
+        setOutput("No output (check your code)");
+      }
     } catch (err) {
+      console.error(err);
       setOutput("Error running code ❌");
     }
   };
@@ -81,13 +95,16 @@ export default function Compiler() {
 
         <div style={styles.output}>
           <h3>Output:</h3>
-          <pre>{output || "No Output"}</pre>
+          <pre>{output ? output : "No output"}</pre>
         </div>
       </div>
     </div>
   );
 }
 
+/* =========================
+   Styles
+========================= */
 const styles = {
   container: {
     display: "flex",
