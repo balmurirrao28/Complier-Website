@@ -7,15 +7,36 @@ const authRoute = require("./routes/auth");
 
 const app = express();
 
+/* =========================
+   ✅ Middleware
+========================= */
+
+// Allow all origins (good for now, can restrict later)
 app.use(cors());
+
+// Parse JSON
 app.use(express.json());
+
+/* =========================
+   ✅ Routes
+========================= */
 
 app.use("/api/auth", authRoute);
 app.use("/api/compiler", compilerRoute);
 
+// Test route
+app.get("/api/hello", (req, res) => {
+  res.json({ message: "Hello from backend 🚀" });
+});
+
+// Root route
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
+
+/* =========================
+   ✅ Server Start
+========================= */
 
 const PORT = process.env.PORT || 5000;
 
