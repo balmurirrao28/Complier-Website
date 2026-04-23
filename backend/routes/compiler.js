@@ -8,7 +8,7 @@ const router = express.Router();
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
+  password: "1234",  // or your actual password
   database: "testdb",
 });
 
@@ -47,16 +47,18 @@ router.post("/", async (req, res) => {
       return res.json({ output: err.message });
     }
 
-    // ✅ HANDLE EMPTY + FORMAT OUTPUT
-    if (!result || result.length === 0) {
-      return res.json({
-        output: "Query executed successfully",
-      });
+    console.log("MySQL result:", result);
+
+    // ✅ FORCE OUTPUT STRING
+    let output = "";
+
+    if (Array.isArray(result) && result.length > 0) {
+      output = Object.values(result[0]).join(" ");
+    } else {
+      output = "Query executed";
     }
 
-    return res.json({
-      output: JSON.stringify(result, null, 2),
-    });
+    return res.json({ output });
   });
   return;
 }

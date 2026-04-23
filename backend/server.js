@@ -3,12 +3,14 @@ const cors = require("cors");
 require("dotenv").config();
 
 const compilerRoute = require("./routes/compiler");
+const authRoute = require("./routes/auth");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/auth", authRoute);
 app.use("/api/compiler", compilerRoute);
 
 app.get("/", (req, res) => {
