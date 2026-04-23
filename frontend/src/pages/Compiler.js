@@ -31,7 +31,7 @@ export default function Compiler() {
     setOutput("Running...");
 
     try {
-      const res = await axios.post("https://complier-backend-lk9v.onrender.com/api/compiler, {
+      const res = await axios.post("https://complier-backend-lk9v.onrender.com/api/compiler", {
         code,
         language,
       });
